@@ -23,9 +23,17 @@ export default {
       sidebar: true
     };
   },
-  created() {
+  mounted() {    
     window.addEventListener("resize", this.resize);
     this.resize();
+    
+    Echo.private(`admin.permissions.${this.User.id}`).listen(
+      "PermissionChange",
+      e => {
+        console.log("permissions changed");
+        this.User.permissions = e.user.permissions;
+      }
+    );
   },
   methods: {
     resize() {
@@ -34,6 +42,11 @@ export default {
     },
     toggleSidebar() {
       this.sidebar = !this.sidebar;
+    }
+  },
+  computed: {
+    User() {
+      return this.$store.state.User.User;
     }
   }
 };

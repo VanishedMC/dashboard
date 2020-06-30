@@ -1,8 +1,15 @@
 require('../bootstrap');
 import Vue from "vue";
+import store from "../store";
 import VueRouter from "vue-router";
+
+// Views
 import Dashboard from "../views/Dashboard";
 import Account from "../views/Account";
+import Images from "../views/Images";
+import Image from "../views/Image";
+
+// Admin views
 import Users from "../views/admin/Users";
 import User from "../views/admin/components/User";
 
@@ -18,6 +25,17 @@ const routes = [
     path: "/account",
     name: "",
     component: Account,
+  },
+  {
+    path: '/images',
+    name: 'UPLOAD_IMAGE',
+    component: Images
+  },
+  {
+    path: '/images/:id',
+    name: 'UPLOAD_IMAGE',
+    component: Image,
+    props: true,
   },
   {
     path: '/admin/users',
@@ -39,8 +57,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if(to.name.length > 0) {
-    if(window.User.hasPermission(to.name)) {
+  if (to.name.length > 0) {
+    if (store.state.User.User.hasPermission(to.name)) {
       next();
     } else {
       next('/');

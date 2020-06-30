@@ -17,14 +17,14 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + document.querySelector('meta[name=api_token]').content;
-window.User = JSON.parse(document.querySelector('meta[name=user]').content);
+// window.User = JSON.parse(document.querySelector('meta[name=user]').content);
 
-User.hasPermission = function(searchPerm) {
-  for(let perm in User.permissions) {
-    if(User.permissions[perm].name === searchPerm) return true;
-  }
-  return false;
-}
+// User.hasPermission = function(searchPerm) {
+//   for(let perm in User.permissions) {
+//     if(User.permissions[perm].name === searchPerm) return true;
+//   }
+//   return false;
+// }
 
 import Echo from 'laravel-echo';
 

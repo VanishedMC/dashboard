@@ -18,14 +18,14 @@
         <hr />
       </li>
 
-      <li>
-        <router-link to="/">Images</router-link>
+      <li v-if="this.User.hasPermission('UPLOAD_IMAGE')">
+        <router-link to="/images">Images</router-link>
         <hr />
       </li>
 
-      <h4>Admin page</h4>
+      <h4 v-if="this.User.hasPermission('ADMIN')">Admin page</h4>
 
-      <li v-if="User.hasPermission('USER_OVERVIEW')">
+      <li v-if="this.User.hasPermission('USER_OVERVIEW')">
         <router-link to="/admin/users">Users overview</router-link>
         <hr />
       </li>
@@ -37,7 +37,7 @@
 export default {
   computed: {
     User() {
-      return User;
+      return this.$store.state.User.User;
     }
   }
 };

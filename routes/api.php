@@ -16,10 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'image'], function() {
   Route::post('/upload', 'ImageController@upload');
+  Route::post('/{id}/update', 'ImageController@update');
+  
+  Route::get('/list', 'ImageController@list');
+  Route::get('/{id}', 'ImageController@get');
+  
+  Route::delete('/{id}', 'ImageController@delete');
 });
 
 Route::group(['prefix' => 'admin'], function() {
-  
   Route::group(['prefix' => 'users'], function() {
     Route::get('/', 'UserController@listUsers')->middleware('permission:USER_OVERVIEW');
     Route::get('/{user}', 'UserController@getUserDetails')->middleware('permission:MANAGE_USER');

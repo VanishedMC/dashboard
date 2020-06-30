@@ -46,9 +46,12 @@ export default {
     }
   },
   computed: {
+    User() {
+      return this.$store.state.User.User;
+    },
     hasManagePerm() {
-      return User.hasPermission('MANAGE_USER');
-    }
+      return this.User.hasPermission('MANAGE_USER');
+    },
   }
 };
 </script>

@@ -73,6 +73,11 @@ export default {
       }
     );
   },
+  computed: {
+    User() {
+      return this.$store.state.User.User;
+    }
+  },
   methods: {
     async load() {
       let response = await axios.get(`/api/admin/users/${this.id}`);
@@ -102,6 +107,10 @@ export default {
         user_id: this.manageUser.id,
         permission_id: perm
       });
+
+      if(this.User.id == this.manageUser.id) {
+        this.User.permissions = this.manageUser.permissions;
+      }
     },
 
     revokePermission(perm) {
@@ -109,6 +118,10 @@ export default {
         user_id: this.manageUser.id,
         permission_id: perm
       });
+
+      if(this.User.id == this.manageUser.id) {
+        this.User.permissions = this.manageUser.permissions;
+      }
     },
 
     onUserDrop(dropResult) {

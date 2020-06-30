@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('admin.permissions.{id}', function($user) {
   return true;
 });
+
+Broadcast::channel('image.uploaded.{user}', function($user) {
+  return true;
+});
