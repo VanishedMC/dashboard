@@ -9,13 +9,21 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller {
     
   public function upload(Request $request) {
+    Log::debug($request);
+
     $request->validate([
-      'image' => 'required|file'
+      'image' => 'required|file|mimes:jpeg,jpg,png,gif',
+      'title' => 'string|min:1|max:200',
+      'public' => 'boolean'
     ]);
+
+    $title = $request->get('title');
+    $public = $request->get('public', true);
 
     $extension = $request->file('image')->getClientOriginalExtension();
  
@@ -24,31 +32,41 @@ class ImageController extends Controller {
       $uid = Str::random(8);
     }
     
-    $path = 'storage/images' . $uid . '.' . $extension;
+    $path = $uid . '.' . $extension;
     $request->file('image')->storeAs(
-      'public/images', $uid . '.' . $extension
+      'images', $path
     );
 
     $img = new Image();
     $img->user_id = Auth::user()->id;
     $img->uuid = $uid;
+    $img->title = $title;
     $img->file = $path;
-    $img->public = true;
+    $img->public = $public;
     $img->save();
 
-    return response($uid);
+    return response(url('i' . $uid));
   }
 
   public function getImage(Request $request, $image) {
     $img = Image::where('uuid', $image)->first();
     if($img == null) {
       return response('Not found', 404);
-    } else {
-      return view('image', [
-        'image_file' => $img->file,
-        'url' => url('i'.$image)
-      ]);
     }
+
+    return Storage::download('images/' . $img->file);
   }
 
+  public function getImageView(Request $request, $image) {
+    $img = Image::where('uuid', $image)->first();
+    if($img == null) {
+      return response('Not found', 404);
+    }
+
+    return view('image', [
+      'image_url' => url('image' . $image),
+      'url' => url('i'.$image),
+      'title' => $img->title
+    ]);
+  }
 }
