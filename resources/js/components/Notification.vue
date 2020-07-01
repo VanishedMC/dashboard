@@ -30,7 +30,6 @@ export default {
   },
   methods: {
     fadeOut() {
-      // Prevent method calling twice
       if (this.deleted) return;
       this.deleted = true;
 
@@ -97,15 +96,6 @@ span.body {
   float: left;
 }
 
-// @keyframes slideIn {
-//   0% {
-//     bottom: -85px
-//   }
-//   100% {
-//     bottom: 0px;
-//   }
-// }
-
 @keyframes slideIn {
   0% {
     transform: translateY(95px);
@@ -132,36 +122,14 @@ span.body {
 }
 
 // Stripe colors
-.success > .stripe {
-  background-color: rgb(2, 93, 2);
-}
-
-.warn > .stripe {
-  background-color: rgb(138, 114, 38);
-}
-
-.generic > .stripe {
-  background-color: rgb(11, 75, 148);
-}
-
-.error > .stripe {
-  background-color: rgb(122, 24, 24);
-}
+.warn > .stripe { background-color: rgb(138, 114, 38); }
+.error > .stripe { background-color: rgb(122, 24, 24); }
+.success > .stripe { background-color: rgb(2, 93, 2); }
+.generic > .stripe { background-color: rgb(11, 75, 148); }
 
 // Body colors
-.success > .content {
-  background-color: rgb(0, 160, 0);
-}
-
-.warn > .content {
-  background-color: rgb(200, 157, 14);
-}
-
-.generic > .content {
-  background-color: rgb(0, 119, 255);
-}
-
-.error > .content {
-  background-color: rgb(235, 11, 11);
-}
+.warn > .content { background-color: rgb(200, 157, 14); }
+.error > .content { background-color: rgb(235, 11, 11); }
+.success > .content { background-color: rgb(0, 160, 0); }
+.generic > .content { background-color: rgb(0, 119, 255); }
 </style>
