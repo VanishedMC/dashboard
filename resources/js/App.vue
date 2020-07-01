@@ -9,6 +9,13 @@
         <sidebar></sidebar>
       </aside>
       <div class="content" :class="{'slideIn thin': sidebar, 'slideOut': !sidebar}">
+        <div class="notifications">
+          <notification
+            v-for="notification in getAllNotifications"
+            :key="notification.id"
+            :notification="notification"
+          />
+        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -16,6 +23,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
@@ -23,10 +32,10 @@ export default {
       sidebar: true
     };
   },
-  mounted() {    
+  mounted() {
     window.addEventListener("resize", this.resize);
     this.resize();
-    
+
     Echo.private(`admin.permissions.${this.User.id}`).listen(
       "PermissionChange",
       e => {
@@ -47,7 +56,8 @@ export default {
   computed: {
     User() {
       return this.$store.state.User.User;
-    }
+    },
+    ...mapGetters(["getAllNotifications"])
   }
 };
 </script>
@@ -131,5 +141,12 @@ body {
   .app {
     height: 80%;
   }
+}
+
+.notifications {
+  z-index: 2;
+  right: 30px;
+  bottom: 15px;
+  position: absolute;
 }
 </style>
