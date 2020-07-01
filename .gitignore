@@ -17,3 +17,8 @@ Homestead.json
 
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
+
+# Vuejs
+public/js/app.js
+public/js/app.js.LICENSE.txt
+public/css/app.css
