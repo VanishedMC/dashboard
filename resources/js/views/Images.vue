@@ -28,12 +28,21 @@ export default {
       loading: true
     };
   },
-  mounted() {
-    this.load();
-
+  created() {
     Echo.private(`image.uploaded.${this.User.id}`).listen("ImageUploaded", e => {
       this.images.push(e.image);
+      this.$notify({
+        type: 'success',
+        title: 'New Image',
+        message: 'A new image was uploaded, and has been loaded!'
+      });
     });
+  },
+  beforeDestroy() {
+    Echo.leave(`image.uploaded.${this.User.id}`);
+  },
+  mounted() {
+    this.load();
   },
   methods: {
     load() {

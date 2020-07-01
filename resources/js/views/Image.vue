@@ -6,14 +6,17 @@
       </div>
     </div>
     <div v-else class="image">
-      <h3>
-        Image settings
-      </h3>
+      <h3>Image settings</h3>
       <label for="title">Image title</label>
       <input type="text" id="title" :value="image.title" />
 
       <label for="uid">Image id</label>
-      <input type="text" id="uid" :value="image.uuid" :disabled="this.User.hasPermission('IMAGE_CUSTOM_UID') == 0"/>
+      <input
+        type="text"
+        id="uid"
+        :value="image.uuid"
+        :disabled="this.User.hasPermission('IMAGE_CUSTOM_UID') == 0"
+      />
 
       <div id="optionsGrid">
         <div>
@@ -65,22 +68,55 @@ export default {
       });
     },
     update() {
-      let isPublic = document.querySelector('#public').checked;
-      let title = document.querySelector('#title').value;
-      let uid = document.querySelector('#uid').value;
+      let isPublic = document.querySelector("#public").checked;
+      let title = document.querySelector("#title").value;
+      let uid = document.querySelector("#uid").value;
 
-      if(title.lenght == 0) title = null;
+      if (title.lenght == 0) title = null;
 
-      axios.post(`/api/image/${this.id}/update`, {
-        'public': isPublic ? 1 : 0,
-        'title': title,
-        'uuid': uid
-      }).catch(err => console.log(err.response));
+      axios
+        .post(`/api/image/${this.id}/update`, {
+          public: isPublic ? 1 : 0,
+          title: title,
+          uuid: uid
+        })
+        .then(response => {
+          this.$notify({
+            type: "success",
+            title: "Updated",
+            message: "Image settings have been updated!"
+          });
+        })
+        .catch(err => {
+          this.$notify({
+            type: "error",
+            title: "Error",
+            message:
+              "Something went wrong updating the image! Please try again later"
+          });
+        });
     },
     deleteImage() {
-      axios.delete(`/api/image/${this.id}`).then(response => {
-        this.$router.push('/images');
-      });
+      axios
+        .delete(`/api/image/${this.id}`)
+        .then(response => {
+          this.$router.push("/images");
+        })
+        .then(response => {
+          this.$notify({
+            type: "success",
+            title: "Deleted",
+            message: "The image has been deleted!"
+          });
+        })
+        .catch(err => {
+          this.$notify({
+            type: "error",
+            title: "Error",
+            message:
+              "Something went wrong updating the image! Please try again later"
+          });
+        });
     }
   }
 };

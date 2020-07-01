@@ -39,8 +39,12 @@ export default {
     Echo.private(`admin.permissions.${this.User.id}`).listen(
       "PermissionChange",
       e => {
-        console.log("permissions changed");
         this.User.permissions = e.user.permissions;
+        this.$notify({
+          type: 'success',
+          title: 'Permissions changed',
+          message: 'An admin has changed your permissions'
+        });
       }
     );
   },

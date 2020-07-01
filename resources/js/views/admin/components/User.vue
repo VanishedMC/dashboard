@@ -70,8 +70,17 @@ export default {
         this.availablePermissions = this.permissions.filter(
           perm => !this.manageUser.hasPermission(perm.name)
         );
+
+        this.$notify({
+          type: 'success',
+          title: 'User changed',
+          message: 'This user was changed by someone else, and has been updated'
+        });
       }
     );
+  },
+  beforeDestroy() {
+    Echo.leave(`admin.permissions.${this.id}`);
   },
   computed: {
     User() {
