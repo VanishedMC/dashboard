@@ -11,10 +11,7 @@ const actions = {
     let User = JSON.parse(document.querySelector('meta[name=user]').content);
     
     User.hasPermission = function(searchPerm) {
-      for (let perm in User.permissions) {
-        if (User.permissions[perm].name === searchPerm) return true;
-      }
-      return false;
+      return User.permissions.some(perm => perm.name === searchPerm)
     }
     
     commit('setUser', User);
