@@ -1,17 +1,17 @@
-require('../bootstrap');
+require('./bootstrap');
 import Vue from "vue";
-import store from "../store";
+import store from "./store";
 import VueRouter from "vue-router";
 
 // Views
-import Dashboard from "../views/Dashboard";
-import Account from "../views/Account";
-import Images from "../views/Images";
-import Image from "../views/Image";
+import Dashboard from "./views/Dashboard";
+import Account from "./views/Account";
+import Images from "./views/Images";
+import Image from "./views/Image";
 
 // Admin views
-import Users from "../views/admin/Users";
-import User from "../views/admin/components/User";
+import Users from "./views/admin/Users";
+import User from "./views/admin/components/User";
 
 Vue.use(VueRouter);
 
