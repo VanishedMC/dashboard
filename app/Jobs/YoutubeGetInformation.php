@@ -28,7 +28,7 @@ class YoutubeGetInformation implements ShouldQueue {
 
   public function handle() {        
     // Get information about the video(s)
-    $process = new Process(['youtube-dl', '--flat-playlist', '--ignore-errors', '--dump-json', $this->url]);
+    $process = new Process(['youtube-dl', '--no-cache-dir', '--flat-playlist', '--ignore-errors', '--dump-json', $this->url]);
     $process->setTimeout(1800);
     $process->run(function ($type, $buffer) {
       if ($type !== Process::ERR) {

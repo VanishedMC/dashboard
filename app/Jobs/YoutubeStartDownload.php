@@ -40,7 +40,7 @@ class YoutubeStartDownload implements ShouldQueue {
       Storage::deleteDirectory('youtube/' . $this->information->id);
     }
 
-    File::makeDirectory($workDirectory, true, true);
+    File::makeDirectory($workDirectory, $mode = 0777, true, true);
 
     $process = new Process(['youtube-dl', '--no-cache-dir', '--ignore-errors', '--no-part', '-f', $type, '-o', '%(title)s.%(ext)s', $this->information->url]);
     $process->setWorkingDirectory($workDirectory);
