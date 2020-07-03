@@ -61,11 +61,15 @@ class YoutubeController extends Controller {
       return response('No download found', 404);
     }
 
+    $file = $information->file();
+    YoutubeCleanup::dispatch($information->id)->delay(now()->addMinutes(30));
+    $information->delete();
+
     if($information->status != 2) {
       return response('Your download is not ready yet', 404);
     }
 
-    return response()->download($information->file);
+    return response()->download($file);
   }
 
   public function postDownload() {
@@ -84,7 +88,7 @@ class YoutubeController extends Controller {
     $information = $user->getYoutubeInformation();
 
     if ($information != null) {
-      YoutubeCleanup::dispatch($information->id)->delay(now()->addSeconds(5));
+      YoutubeCleanup::dispatch($information->id)->delay(now()->addMinutes(30));
       $information->delete();
       return response('ok', 200);
     } else {

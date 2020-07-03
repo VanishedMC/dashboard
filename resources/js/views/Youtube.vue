@@ -119,7 +119,7 @@ export default {
     },
     finishDownload() {
       FileDownload();
-      axios.post("/youtube/reset").then(() => this.reset());
+      this.reset();
     },
     cancelSearch() {
       axios.post("/youtube/reset").then(() => this.reset());
