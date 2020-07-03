@@ -20,7 +20,7 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    encrypted: true,
+    encrypted: false,
     auth: {
       headers: {
         Authorization: 'Bearer ' + document.querySelector('meta[name=api_token]').content

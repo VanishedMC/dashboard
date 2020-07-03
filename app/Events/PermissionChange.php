@@ -12,23 +12,24 @@ use Illuminate\Queue\SerializesModels;
 
 use App\User;
 
-class PermissionChange implements ShouldBroadcast
-{
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+class PermissionChange implements ShouldBroadcast {
+  use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+  public $queue = 'high';
 
-    public function __construct(User $changed) {
-        $this->user = $changed;
-    }
+  public $user;
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('admin.permissions.' . $this->user->id);
-    }
+  public function __construct(User $changed) {
+      $this->user = $changed;
+  }
+
+  /**
+   * Get the channels the event should broadcast on.
+   *
+   * @return \Illuminate\Broadcasting\Channel|array
+   */
+  public function broadcastOn()
+  {
+      return new PrivateChannel('admin.permissions.' . $this->user->id);
+  }
 }

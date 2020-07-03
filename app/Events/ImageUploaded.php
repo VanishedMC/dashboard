@@ -15,6 +15,8 @@ use Illuminate\Queue\SerializesModels;
 class ImageUploaded implements ShouldBroadcast { 
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $queue = 'high';
+
     public $image;
     private $user;
 
