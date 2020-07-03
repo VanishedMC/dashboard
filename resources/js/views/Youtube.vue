@@ -119,19 +119,18 @@ export default {
     },
     finishDownload() {
       FileDownload();
-      this.reset();
-    },
-    cancelSearch() {
-      axios.post("/youtube/reset").then(() => {
-        this.reset();
-        this.loadVideoInformation();
-      });
-    },
-    reset() {
-      this.loading = true;
       this.videoInformation = null;
       this.download = false;
       this.searchUrl = "";
+    },
+    cancelSearch() {
+      axios.post("/youtube/reset").then(() => {
+        this.loading = true;
+        this.videoInformation = null;
+        this.download = false;
+        this.searchUrl = "";
+        this.loadVideoInformation();
+      });
     }
   },
   computed: {
