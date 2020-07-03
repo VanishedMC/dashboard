@@ -20,8 +20,8 @@ class YoutubeCleanup implements ShouldQueue {
   }
 
   public function handle() {
-    if (file_exists(storage_path() . '\app\youtube\\' . $this->id)) {
-      Storage::deleteDirectory('youtube\\' . $this->id);
+    if (file_exists(storage_path() . '/app/youtube/' . $this->id)) {
+      Storage::deleteDirectory('youtube/' . $this->id);
     }
   }
 }

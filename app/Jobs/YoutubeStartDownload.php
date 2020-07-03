@@ -31,13 +31,13 @@ class YoutubeStartDownload implements ShouldQueue {
     $this->information->save();
     event(new YoutubeStartedDownloading($this->information->getUser()));
 
-    $workDirectory = storage_path() . '\app\youtube\\' . $this->information->id;
+    $workDirectory = storage_path() . '/app/youtube/' . $this->information->id;
     // fix something for this
     // Fetch type from YoutubeInformation, has to be added
     $type = (true) ? 'bestaudio' : 'bestvideo+bestaudio';
 
     if(file_exists($workDirectory)) {
-      Storage::deleteDirectory('youtube\\' . $this->information->id);
+      Storage::deleteDirectory('youtube/' . $this->information->id);
     }
 
     File::makeDirectory($workDirectory, true, true);
@@ -47,7 +47,7 @@ class YoutubeStartDownload implements ShouldQueue {
     $process->setTimeout(1800);
     $process->run();
 
-    foreach(Storage::files('youtube\\' . $this->information->id) as $file) {
+    foreach(Storage::files('youtube/' . $this->information->id) as $file) {
       // Get the base, and new name
       $fileBaseName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
 
@@ -69,18 +69,18 @@ class YoutubeStartDownload implements ShouldQueue {
     // After all files are ready, zip if playlist, then prepare download
     if(strpos($this->information->url, 'playlist') !== false) {
       // playlist
-      $zipFile = $workDirectory . '\\playlist.zip';
+      $zipFile = $workDirectory . '/playlist.zip';
       $zip = new \ZipArchive();
       $zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
-      foreach(Storage::files('youtube\\' . $this->information->id) as $file) {
+      foreach(Storage::files('youtube/' . $this->information->id) as $file) {
         $fileName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
-        $zip->addFile($workDirectory . "\\$fileName", $fileName);
+        $zip->addFile($workDirectory . "/$fileName", $fileName);
       }
 
       $zip->close();
 
-      foreach(Storage::files('youtube\\' . $this->information->id) as $file) {
+      foreach(Storage::files('youtube/' . $this->information->id) as $file) {
         // Delete all files except the zip
         $fileName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
         if($fileName != 'playlist.zip') {
@@ -91,7 +91,7 @@ class YoutubeStartDownload implements ShouldQueue {
       $this->information->file = $zipFile;
     } else {
       // single file
-      $this->information->file = $workDirectory . '\\' . pathinfo(Storage::files('youtube\\' . $this->information->id)[0], PATHINFO_BASENAME);
+      $this->information->file = $workDirectory . '/' . pathinfo(Storage::files('youtube/' . $this->information->id)[0], PATHINFO_BASENAME);
     }
 
     $this->information->status = 2;
