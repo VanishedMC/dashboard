@@ -61,7 +61,7 @@ class YoutubeController extends Controller {
       return response('No download found', 404);
     }
 
-    $file = $information->file();
+    $file = $information->file;
     YoutubeCleanup::dispatch($information->id)->delay(now()->addMinutes(30));
     $information->delete();
 
