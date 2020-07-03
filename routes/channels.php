@@ -20,3 +20,7 @@ Broadcast::channel('admin.permissions.{id}', function($user) {
 Broadcast::channel('image.uploaded.{user}', function($user) {
   return true;
 });
+
+Broadcast::channel('youtube.{user}', function($user) {
+  return true;
+});

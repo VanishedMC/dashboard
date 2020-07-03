@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 // Views
 import Dashboard from "./views/Dashboard";
 import Account from "./views/Account";
+import Youtube from "./views/Youtube";
 import Images from "./views/Images";
 import Image from "./views/Image";
 
@@ -36,6 +37,11 @@ const routes = [
     name: 'UPLOAD_IMAGE',
     component: Image,
     props: true,
+  },
+  {
+    path: '/youtube',
+    name: 'YOUTUBE',
+    component: Youtube
   },
   {
     path: '/admin/users',

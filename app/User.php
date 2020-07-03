@@ -54,4 +54,8 @@ class User extends Authenticatable
     public function getImages() {
       return $this->hasMany(Image::class);
     }
+
+    public function getYoutubeInformation() {
+      return $this->hasMany(YoutubeInformation::class)->first();
+    }
 }

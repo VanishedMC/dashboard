@@ -15,5 +15,12 @@ Route::get('/images', 'DashboardController@view')->middleware('auth');
 Route::get('/image{image}', 'Api\ImageController@getByUid')->middleware('image-access');
 Route::get('/i{image}', 'Api\ImageController@getImageView')->middleware('image-access');
 
+// Youtube routes
+Route::get('/youtube/information', 'YoutubeController@getVideoInformation')->middleware('permission:YOUTUBE');
+Route::post('/youtube/information', 'YoutubeController@postVideoInformation')->middleware('permission:YOUTUBE');
+Route::get('/youtube/download', 'YoutubeController@getDownload')->middleware('permission:YOUTUBE');
+Route::post('/youtube/download', 'YoutubeController@postDownload')->middleware('permission:YOUTUBE');
+Route::post('/youtube/reset', 'YoutubeController@reset')->middleware('permission:YOUTUBE');
+
 // Catch-all route
 Route::get('/{any}', 'DashboardController@view')->where('any', '.*')->middleware('auth');

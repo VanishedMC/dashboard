@@ -23,6 +23,11 @@
         <hr />
       </li>
 
+      <li v-if="this.User.hasPermission('YOUTUBE')">
+        <router-link to="/youtube">Youtube</router-link>
+        <hr />
+      </li>
+
       <h4 v-if="this.User.hasPermission('ADMIN')">Admin page</h4>
 
       <li v-if="this.User.hasPermission('USER_OVERVIEW')">
