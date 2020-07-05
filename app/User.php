@@ -47,6 +47,10 @@ class User extends Authenticatable
       return false;
     }
 
+    public function getShortUrls() {
+      return $this->hasMany('App\ShortUrl')->get();
+    }
+
     public function permissions() {
       return $this->belongsToMany(Permission::class, 'user_permission');
     }

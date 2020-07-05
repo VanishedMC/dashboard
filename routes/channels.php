@@ -24,3 +24,7 @@ Broadcast::channel('image.uploaded.{user}', function($user) {
 Broadcast::channel('youtube.{user}', function($user) {
   return true;
 });
+
+Broadcast::channel('url.created.{user}', function($user) {
+  return true;
+});

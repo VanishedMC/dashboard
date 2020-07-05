@@ -15,13 +15,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'image'], function() {
-  Route::post('/upload', 'ImageController@upload');
-  Route::post('/{id}/update', 'ImageController@update');
+  Route::post('/upload', 'ImageController@upload')->middleware('permission:UPLOAD_IMAGE');
+  Route::post('/{id}/update', 'ImageController@update')->middleware('permission:UPLOAD_IMAGE');
   
-  Route::get('/list', 'ImageController@list');
-  Route::get('/{id}', 'ImageController@get');
+  Route::get('/list', 'ImageController@list')->middleware('permission:UPLOAD_IMAGE');
+  Route::get('/{id}', 'ImageController@get')->middleware('permission:UPLOAD_IMAGE');
   
-  Route::delete('/{id}', 'ImageController@delete');
+  Route::delete('/{id}', 'ImageController@delete')->middleware('permission:UPLOAD_IMAGE');
+});
+
+Route::group(['prefix' => 'url'], function() {
+  Route::post('/create', 'UrlController@create')->middleware('permission:CREATE_SHORT_URL');
+  Route::get('/list', 'UrlController@list')->middleware('permission:CREATE_SHORT_URL');
+  Route::delete('/{id}', 'UrlController@delete')->middleware('permission:CREATE_SHORT_URL');
 });
 
 Route::group(['prefix' => 'admin'], function() {

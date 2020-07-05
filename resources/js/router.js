@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 
 // Views
 import Dashboard from "./views/Dashboard";
+import ShortUrl from "./views/ShortUrl";
 import Account from "./views/Account";
 import Youtube from "./views/Youtube";
 import Images from "./views/Images";
@@ -37,6 +38,11 @@ const routes = [
     name: 'UPLOAD_IMAGE',
     component: Image,
     props: true,
+  },
+  {
+    path: '/urls',
+    name: 'CREATE_SHORT_URL',
+    component: ShortUrl
   },
   {
     path: '/youtube',

@@ -23,6 +23,11 @@
         <hr />
       </li>
 
+      <li v-if="this.User.hasPermission('CREATE_SHORT_URL')">
+        <router-link to="/urls">Short links</router-link>
+        <hr />
+      </li>
+
       <li v-if="this.User.hasPermission('YOUTUBE')">
         <router-link to="/youtube">Youtube</router-link>
         <hr />
