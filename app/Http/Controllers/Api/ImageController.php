@@ -53,7 +53,7 @@ class ImageController extends Controller {
     // Fire the event
     event(new ImageUploaded($img, Auth::user()));
 
-    $url = env('IMAGE_URL') . 'i' . $uid;
+    $url = env('SITE_URL') . 'i' . $uid;
 
     return response($url);
   }
