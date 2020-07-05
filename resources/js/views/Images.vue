@@ -29,14 +29,17 @@ export default {
     };
   },
   created() {
-    Echo.private(`image.uploaded.${this.User.id}`).listen("ImageUploaded", e => {
-      this.images.push(e.image);
-      this.$notify({
-        type: 'success',
-        title: 'New Image',
-        message: 'A new image was uploaded, and has been loaded!'
-      });
-    });
+    Echo.private(`image.uploaded.${this.User.id}`).listen(
+      "ImageUploaded",
+      e => {
+        this.images.push(e.image);
+        this.$notify({
+          type: "success",
+          title: "New Image",
+          message: "A new image was uploaded, and has been loaded!"
+        });
+      }
+    );
   },
   beforeDestroy() {
     Echo.leave(`image.uploaded.${this.User.id}`);
@@ -56,7 +59,7 @@ export default {
     User() {
       return this.$store.state.User.User;
     }
-  },
+  }
 };
 </script>
 

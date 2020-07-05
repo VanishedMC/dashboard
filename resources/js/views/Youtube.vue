@@ -45,7 +45,7 @@ export default {
       loading: true,
       videoInformation: null,
       download: false,
-      searchUrl: "",
+      searchUrl: ""
     };
   },
   mounted() {

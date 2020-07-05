@@ -2,19 +2,17 @@
 
 namespace App\Jobs;
 
+use App\Events\YoutubeFinishedDownloading;
+use App\Events\YoutubeStartedDownloading;
 use App\YoutubeInformation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
-use Illuminate\Queue\SerializesModels;
-use Symfony\Component\Process\Process;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-
-use App\Events\YoutubeStartedDownloading;
-use App\Events\YoutubeFinishedDownloading;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Process\Process;
 
 class YoutubeStartDownload implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -36,7 +34,7 @@ class YoutubeStartDownload implements ShouldQueue {
     // Fetch type from YoutubeInformation, has to be added
     $type = (true) ? 'bestaudio' : 'bestvideo+bestaudio';
 
-    if(file_exists($workDirectory)) {
+    if (file_exists($workDirectory)) {
       Storage::deleteDirectory('youtube/' . $this->information->id);
     }
 
@@ -47,12 +45,12 @@ class YoutubeStartDownload implements ShouldQueue {
     $process->setTimeout(1800);
     $process->run();
 
-    foreach(Storage::files('youtube/' . $this->information->id) as $file) {
+    foreach (Storage::files('youtube/' . $this->information->id) as $file) {
       // Get the base, and new name
       $fileBaseName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
 
       // mp3 is user chose audio, mp4 if user chose video
-      $fileNewName =  pathinfo(storage_path() . $file, PATHINFO_FILENAME) . (true ? '.mp3' : '.mp4' );
+      $fileNewName = pathinfo(storage_path() . $file, PATHINFO_FILENAME) . (true ? '.mp3' : '.mp4');
 
       // Use Ffmpeg to convert the video to its new type
       $process = new Process(['ffmpeg', '-i', $fileBaseName, $fileNewName, '-y']);
@@ -61,29 +59,29 @@ class YoutubeStartDownload implements ShouldQueue {
       $process->run();
 
       // Delete the original file
-      if($fileBaseName != $fileNewName) {
+      if ($fileBaseName != $fileNewName) {
         Storage::delete($file);
       }
     }
 
     // After all files are ready, zip if playlist, then prepare download
-    if(strpos($this->information->url, 'playlist') !== false) {
+    if (strpos($this->information->url, 'playlist') !== false) {
       // playlist
       $zipFile = $workDirectory . '/playlist.zip';
       $zip = new \ZipArchive();
       $zip->open($zipFile, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
 
-      foreach(Storage::files('youtube/' . $this->information->id) as $file) {
+      foreach (Storage::files('youtube/' . $this->information->id) as $file) {
         $fileName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
         $zip->addFile($workDirectory . "/$fileName", $fileName);
       }
 
       $zip->close();
 
-      foreach(Storage::files('youtube/' . $this->information->id) as $file) {
+      foreach (Storage::files('youtube/' . $this->information->id) as $file) {
         // Delete all files except the zip
         $fileName = pathinfo(storage_path() . $file, PATHINFO_BASENAME);
-        if($fileName != 'playlist.zip') {
+        if ($fileName != 'playlist.zip') {
           Storage::delete($file);
         }
       }

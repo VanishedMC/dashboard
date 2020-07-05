@@ -2,39 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\YoutubeCleanup;
+use App\Jobs\YoutubeGetInformation;
+use App\Jobs\YoutubeStartDownload;
 use App\YoutubeInformation;
 use Illuminate\Http\Request;
-use App\Jobs\YoutubeCleanup;
-use App\Jobs\YoutubeStartDownload;
-use App\Jobs\YoutubeGetInformation;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class YoutubeController extends Controller {
-  
+
   public function getVideoInformation(Request $request) {
     $information = Auth::user()->getYoutubeInformation();
 
     //return $information;
 
-    if($information == null) {
+    if ($information == null) {
       return response('No information available', 201);
     } else {
       return $information;
-    } 
+    }
   }
 
   public function postVideoInformation(Request $request) {
+    // TODO work on validation
+    // /(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/((watch\?v=[a-zA-Z0-9-]+)|(playlist\?list=[a-zA-Z0-9-]+))/
     $request->validate([
       'url' => [
-        'required', 'string', 'regex:/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/'
+        'required', 'string', 'regex:/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/',
       ],
     ]);
 
     $information = Auth::user()->getYoutubeInformation();
-    if($information != null) {
+    if ($information != null) {
       return response("information already exists", 500);
     }
 
@@ -57,7 +57,7 @@ class YoutubeController extends Controller {
   public function getDownload(Request $request) {
     // Download final file to user
     $information = Auth::user()->getYoutubeInformation();
-    if($information == null) {
+    if ($information == null) {
       return response('No download found', 404);
     }
 
@@ -65,7 +65,7 @@ class YoutubeController extends Controller {
     YoutubeCleanup::dispatch($information->id)->delay(now()->addMinutes(30));
     $information->delete();
 
-    if($information->status != 2) {
+    if ($information->status != 2) {
       return response('Your download is not ready yet', 404);
     }
 
@@ -75,8 +75,8 @@ class YoutubeController extends Controller {
   public function postDownload() {
     $user = Auth::user();
     $information = $user->getYoutubeInformation();
-    
-    if($information->data != null && $information->status == 0) {
+
+    if ($information->data != null && $information->status == 0) {
       YoutubeStartDownload::dispatch($information);
     }
 

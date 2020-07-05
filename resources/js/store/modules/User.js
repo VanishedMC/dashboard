@@ -9,11 +9,11 @@ const getters = {
 const actions = {
   getUserFromMeta({ commit }) {
     let User = JSON.parse(document.querySelector('meta[name=user]').content);
-    
-    User.hasPermission = function(searchPerm) {
+
+    User.hasPermission = function (searchPerm) {
       return User.permissions.some(perm => perm.name === searchPerm)
     }
-    
+
     commit('setUser', User);
   }
 };

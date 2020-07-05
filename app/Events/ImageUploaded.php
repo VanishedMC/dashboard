@@ -2,17 +2,15 @@
 
 namespace App\Events;
 
-use App\User;
 use App\Image;
-use Illuminate\Broadcasting\Channel;
+use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ImageUploaded implements ShouldBroadcast { 
+class ImageUploaded implements ShouldBroadcast {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   public $queue = 'high';

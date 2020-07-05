@@ -2,15 +2,13 @@
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-
-use App\User;
 
 class PermissionChange implements ShouldBroadcast {
   use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -20,7 +18,7 @@ class PermissionChange implements ShouldBroadcast {
   public $user;
 
   public function __construct(User $changed) {
-      $this->user = $changed;
+    $this->user = $changed;
   }
 
   /**
@@ -28,8 +26,7 @@ class PermissionChange implements ShouldBroadcast {
    *
    * @return \Illuminate\Broadcasting\Channel|array
    */
-  public function broadcastOn()
-  {
-      return new PrivateChannel('admin.permissions.' . $this->user->id);
+  public function broadcastOn() {
+    return new PrivateChannel('admin.permissions.' . $this->user->id);
   }
 }

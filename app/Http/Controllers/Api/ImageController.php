@@ -2,38 +2,36 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
-use App\Image;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Events\ImageUploaded;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Image;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ImageController extends Controller {
-    
+
   // Upload new image
   public function upload(Request $request) {
     $request->validate([
       'image' => 'required|file|mimes:jpeg,jpg,png,gif',
       'title' => 'string|min:1|max:200',
-      'public' => 'boolean'
+      'public' => 'boolean',
     ]);
 
     $title = $request->get('title');
     $public = $request->get('public', true);
 
     $extension = $request->file('image')->getClientOriginalExtension();
- 
+
     // Generate a random UID that doesn't exist
-    $uid = Str::random(8); 
-    while(Image::where('uuid', $uid)->first() != null) {
+    $uid = Str::random(8);
+    while (Image::where('uuid', $uid)->first() != null) {
       $uid = Str::random(8);
     }
-    
+
     $path = $uid . '.' . $extension;
 
     // Store the file in the public or private folder
@@ -62,30 +60,32 @@ class ImageController extends Controller {
   public function update(Request $request, $id) {
     $image = Image::where('id', $id)->first();
 
-    if($image == null) {
+    if ($image == null) {
       return response('Not found', 404);
     }
 
-    if($image->user_id != Auth::user()->id) {
+    if ($image->user_id != Auth::user()->id) {
       return response('Unauthorized', 401);
     }
 
     $errors = $request->validate([
-      'title'  => 'nullable|string|max:200',
-      'uuid'   => 'required|string|min:2|max:20|regex:/^\S*$/u',
-      'public' => 'required|boolean'
+      'title' => 'nullable|string|max:200',
+      'uuid' => 'required|string|min:2|max:20|regex:/^\S*$/u',
+      'public' => 'required|boolean',
     ]);
 
     $uid = $request->get('uuid');
     $title = $request->get('title');
     $public = $request->get('public');
 
-    if(Str::length($title) == 0) $title = null;
+    if (Str::length($title) == 0) {
+      $title = null;
+    }
 
     $oldUid = $image->uuid;
-    if($oldUid != $uid) {
-      if(Auth::user()->hasPermission('IMAGE_CUSTOM_UID')) {
-        if(Image::where('uuid', $uid)->first() != null) {
+    if ($oldUid != $uid) {
+      if (Auth::user()->hasPermission('IMAGE_CUSTOM_UID')) {
+        if (Image::where('uuid', $uid)->first() != null) {
           return response('uuid is taken', 422);
         }
       } else {
@@ -97,12 +97,12 @@ class ImageController extends Controller {
     $oldPublic = $image->public;
 
     // If the image was public and now is private, move file
-    if($oldPublic && !$public) {
+    if ($oldPublic && !$public) {
       Storage::move('public/images/' . $image->file, 'images/' . $image->file);
     }
 
     // If the image was private and now is public, move file
-    if(!$oldPublic && $public) {
+    if (!$oldPublic && $public) {
       Storage::move('images/' . $image->file, 'public/images/' . $image->file);
     }
 
@@ -112,22 +112,22 @@ class ImageController extends Controller {
     $image->save();
 
     return json_encode([
-      'success' => 'Image updated'
+      'success' => 'Image updated',
     ]);
   }
 
   public function delete(Request $request, $id) {
     $image = Image::where('id', $id)->first();
 
-    if($image == null) {
+    if ($image == null) {
       return response('Not found', 404);
     }
 
-    if($image->user_id != Auth::user()->id) {
+    if ($image->user_id != Auth::user()->id) {
       return response('Unauthorized', 401);
     }
 
-    if($image->public) {
+    if ($image->public) {
       Storage::delete('public/images/' . $image->file);
     } else {
       Storage::delete('images/' . $image->file);
@@ -141,11 +141,11 @@ class ImageController extends Controller {
   public function get(Request $request, $id) {
     $image = Image::where('id', $id)->first();
 
-    if($image == null) {
+    if ($image == null) {
       return response('Not found', 404);
     }
 
-    if($image->user_id == Auth::user()->id) {
+    if ($image->user_id == Auth::user()->id) {
       return $image;
     } else {
       return response('Not found', 404);
@@ -153,14 +153,14 @@ class ImageController extends Controller {
   }
 
   // Get image by UID
-  public function getByUid(Request $request, $image) {    
+  public function getByUid(Request $request, $image) {
     $img = Image::where('uuid', $image)->first();
 
-    if($img == null) {
+    if ($img == null) {
       return response('Not found', 404);
     }
 
-    if($img->public) {
+    if ($img->public) {
       return redirect(url('storage/images/' . $img->file));
     }
 
@@ -176,21 +176,21 @@ class ImageController extends Controller {
   // Get the view for an image
   public function getImageView(Request $request, $image) {
     $img = Image::where('uuid', $image)->first();
-    if($img == null) {
+    if ($img == null) {
       return response('Not found', 404);
     }
 
-    if($img->public) {
+    if ($img->public) {
       return view('image', [
         'image_url' => url('storage/images/' . $img->file),
-        'url' => url('i'.$image),
-        'title' => $img->title
+        'url' => url('i' . $image),
+        'title' => $img->title,
       ]);
     } else {
       return view('image', [
         'image_url' => url('image' . $image),
-        'url' => url('i'.$image),
-        'title' => $img->title
+        'url' => url('i' . $image),
+        'title' => $img->title,
       ]);
     }
   }

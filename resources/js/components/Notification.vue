@@ -1,5 +1,10 @@
 <template>
-  <div :id="'notification-' + notification.id" class="notification" :class="styles" @click="fadeOut">
+  <div
+    :id="'notification-' + notification.id"
+    class="notification"
+    :class="styles"
+    @click="fadeOut"
+  >
     <div class="stripe"></div>
     <div class="content">
       <span class="title">{{notification.title}}</span>
@@ -15,7 +20,7 @@ export default {
     return {
       isFirstChildCountdown: -1,
       fadeCountDown: -1,
-      deleted: false,
+      deleted: false
     };
   },
   mounted() {
@@ -45,7 +50,11 @@ export default {
   },
   computed: {
     styles() {
-      return this.notification.type + ' ' + (this.notification.fadeOut ? 'fadeOut' : '');
+      return (
+        this.notification.type +
+        " " +
+        (this.notification.fadeOut ? "fadeOut" : "")
+      );
     }
   }
 };
@@ -122,14 +131,30 @@ span.body {
 }
 
 // Stripe colors
-.warn > .stripe { background-color: rgb(138, 114, 38); }
-.error > .stripe { background-color: rgb(122, 24, 24); }
-.success > .stripe { background-color: rgb(2, 93, 2); }
-.generic > .stripe { background-color: rgb(11, 75, 148); }
+.warn > .stripe {
+  background-color: rgb(138, 114, 38);
+}
+.error > .stripe {
+  background-color: rgb(122, 24, 24);
+}
+.success > .stripe {
+  background-color: rgb(2, 93, 2);
+}
+.generic > .stripe {
+  background-color: rgb(11, 75, 148);
+}
 
 // Body colors
-.warn > .content { background-color: rgb(200, 157, 14); }
-.error > .content { background-color: rgb(235, 11, 11); }
-.success > .content { background-color: rgb(0, 160, 0); }
-.generic > .content { background-color: rgb(0, 119, 255); }
+.warn > .content {
+  background-color: rgb(200, 157, 14);
+}
+.error > .content {
+  background-color: rgb(235, 11, 11);
+}
+.success > .content {
+  background-color: rgb(0, 160, 0);
+}
+.generic > .content {
+  background-color: rgb(0, 119, 255);
+}
 </style>

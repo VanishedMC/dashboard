@@ -11,7 +11,7 @@ Vue.component('sidebar', Sidebar);
 Vue.component('notification', Notification);
 
 Vue.prototype.$notify = (notification) => {
-  if(store.state.Notifications.Notifications.length >= 5) {
+  if (store.state.Notifications.Notifications.length >= 5) {
     store.dispatch('queueNotification', notification);
   } else {
     store.dispatch('addNotification', notification);

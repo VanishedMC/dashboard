@@ -2,16 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Events\YoutubeInformationFinishedLoading;
 use App\User;
-use App\YoutubeInformation;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\Process\Process;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Events\YoutubeInformationFinishedLoading;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Process;
 
 class YoutubeGetInformation implements ShouldQueue {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -26,22 +25,27 @@ class YoutubeGetInformation implements ShouldQueue {
     $this->url = $url;
   }
 
-  public function handle() {        
+  public function handle() {
     // Get information about the video(s)
     $process = new Process(['youtube-dl', '--no-cache-dir', '--flat-playlist', '--ignore-errors', '--dump-json', $this->url]);
     $process->setTimeout(1800);
     $process->run(function ($type, $buffer) {
       if ($type !== Process::ERR) {
-        if(strpos($this->url, 'playlist') !== false) {
+        if (strpos($this->url, 'playlist') !== false) {
           // playlist
           $rawData = explode('}', $buffer);
 
-          foreach($rawData as $video) {
+          foreach ($rawData as $video) {
             $video = trim($video . "}");
-            if(strlen($video) == 1 || $video == '}' || $video == null || empty($video)) continue;
+            if (strlen($video) == 1 || $video == '}' || $video == null || empty($video)) {
+              continue;
+            }
+
             $video = json_decode($video);
 
-            if($video->title == '[Private video]' || $video->title == '[Deleted video]') continue;
+            if ($video->title == '[Private video]' || $video->title == '[Deleted video]') {
+              continue;
+            }
 
             $videoData = new \stdClass();
             $videoData->title = $video->title;
@@ -73,7 +77,7 @@ class YoutubeGetInformation implements ShouldQueue {
     $information = $this->user->getYoutubeInformation();
     $information->data = json_encode($this->videos);
     $information->save();
-  
+
     event(new YoutubeInformationFinishedLoading($this->user));
   }
 }

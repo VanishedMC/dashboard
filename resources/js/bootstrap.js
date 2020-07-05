@@ -17,13 +17,13 @@ import Echo from 'laravel-echo';
 window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    encrypted: false,
-    auth: {
-      headers: {
-        Authorization: 'Bearer ' + document.querySelector('meta[name=api_token]').content
-      }
+  broadcaster: 'pusher',
+  key: process.env.MIX_PUSHER_APP_KEY,
+  cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  encrypted: false,
+  auth: {
+    headers: {
+      Authorization: 'Bearer ' + document.querySelector('meta[name=api_token]').content
     }
+  }
 });

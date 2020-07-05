@@ -41,9 +41,9 @@ export default {
       e => {
         this.User.permissions = e.user.permissions;
         this.$notify({
-          type: 'success',
-          title: 'Permissions changed',
-          message: 'An admin has changed your permissions'
+          type: "success",
+          title: "Permissions changed",
+          message: "An admin has changed your permissions"
         });
       }
     );

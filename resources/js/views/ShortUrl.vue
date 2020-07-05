@@ -42,12 +42,12 @@ export default {
   mounted() {
     this.load();
 
-    Echo.private(`url.created.${this.User.id}`).listen('ShortUrlCreated', (e) => {
+    Echo.private(`url.created.${this.User.id}`).listen("ShortUrlCreated", e => {
       this.urls.push(e.url);
       this.$notify({
-        type: 'success',
-        title: 'New URL',
-        message: 'A new URL was created, and has been loaded!'
+        type: "success",
+        title: "New URL",
+        message: "A new URL was created, and has been loaded!"
       });
     });
   },
@@ -107,7 +107,7 @@ export default {
     User() {
       return this.$store.state.User.User;
     }
-  },
+  }
 };
 </script>
 

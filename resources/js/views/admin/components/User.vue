@@ -72,9 +72,9 @@ export default {
         );
 
         this.$notify({
-          type: 'success',
-          title: 'User changed',
-          message: 'This user was changed by someone else, and has been updated'
+          type: "success",
+          title: "User changed",
+          message: "This user was changed by someone else, and has been updated"
         });
       }
     );
@@ -117,7 +117,7 @@ export default {
         permission_id: perm
       });
 
-      if(this.User.id == this.manageUser.id) {
+      if (this.User.id == this.manageUser.id) {
         this.User.permissions = this.manageUser.permissions;
       }
     },
@@ -128,7 +128,7 @@ export default {
         permission_id: perm
       });
 
-      if(this.User.id == this.manageUser.id) {
+      if (this.User.id == this.manageUser.id) {
         this.User.permissions = this.manageUser.permissions;
       }
     },

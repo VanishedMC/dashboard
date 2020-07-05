@@ -14,7 +14,9 @@
         <td>
           <img :src="user.avatar_url" alt="avatar" />
         </td>
-        <td><code>{{user.id}}</code></td>
+        <td>
+          <code>{{user.id}}</code>
+        </td>
         <td>{{user.name}}</td>
         <td v-if="hasManagePerm">
           <router-link :to="`/admin/users/${user.id}`">Manage</router-link>
@@ -50,8 +52,8 @@ export default {
       return this.$store.state.User.User;
     },
     hasManagePerm() {
-      return this.User.hasPermission('MANAGE_USER');
-    },
+      return this.User.hasPermission("MANAGE_USER");
+    }
   }
 };
 </script>
@@ -83,7 +85,8 @@ tr {
   border-bottom: 1px solid white;
 }
 
-td,th {
+td,
+th {
   padding: 15px;
   text-align: center;
   vertical-align: middle;
