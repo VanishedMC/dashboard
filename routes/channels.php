@@ -11,20 +11,24 @@ use Illuminate\Support\Facades\Broadcast;
 | application supports. The given channel authorization callbacks are
 | used to check if an authenticated user can listen to the channel.
 |
-*/
+ */
 
-Broadcast::channel('admin.permissions.{id}', function($user) {
+Broadcast::channel('admin.permissions.{id}', function ($user) {
   return true;
 });
 
-Broadcast::channel('image.uploaded.{user}', function($user) {
+Broadcast::channel('image.uploaded.{user}', function ($user) {
   return true;
 });
 
-Broadcast::channel('youtube.{user}', function($user) {
+Broadcast::channel('youtube.{user}', function ($user) {
   return true;
 });
 
-Broadcast::channel('url.created.{user}', function($user) {
+Broadcast::channel('url.created.{user}', function ($user) {
+  return true;
+});
+
+Broadcast::channel('reminder.sent.{user}', function ($user) {
   return true;
 });

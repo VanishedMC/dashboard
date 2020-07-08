@@ -9,16 +9,17 @@
         <sidebar></sidebar>
       </aside>
       <div class="content" :class="{'slideIn thin': sidebar, 'slideOut': !sidebar}">
-        <div class="notifications">
-          <notification
-            v-for="notification in getAllNotifications"
-            :key="notification.id"
-            :notification="notification"
-          />
-        </div>
         <router-view></router-view>
       </div>
+      <div class="notifications">
+        <notification
+          v-for="notification in getAllNotifications"
+          :key="notification.id"
+          :notification="notification"
+        />
+      </div>
     </div>
+    <alert v-if="getAlert != null" :alert="getAlert" />
   </div>
 </template>
 
@@ -61,7 +62,7 @@ export default {
     User() {
       return this.$store.state.User.User;
     },
-    ...mapGetters(["getAllNotifications"])
+    ...mapGetters(["getAllNotifications", "getAlert"])
   }
 };
 </script>

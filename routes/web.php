@@ -21,7 +21,7 @@ Route::get('/i{image}', 'Api\ImageController@getImageView')->middleware('image-a
 Route::get('/u{url}', 'Api\UrlController@redirect');
 
 // Youtube routes
-Route::group(['prefix' => 'youtube'], function() {
+Route::group(['prefix' => 'youtube'], function () {
   Route::get('/information', 'YoutubeController@getVideoInformation')->middleware('permission:YOUTUBE');
   Route::get('/download', 'YoutubeController@getDownload')->middleware('permission:YOUTUBE');
   Route::post('/download', 'YoutubeController@postDownload')->middleware('permission:YOUTUBE');

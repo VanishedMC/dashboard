@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 
 // Views
 import Dashboard from "./views/Dashboard";
+import Reminders from "./views/Reminders";
 import ShortUrl from "./views/ShortUrl";
 import Account from "./views/Account";
 import Youtube from "./views/Youtube";
@@ -43,6 +44,11 @@ const routes = [
     path: '/urls',
     name: 'CREATE_SHORT_URL',
     component: ShortUrl
+  },
+  {
+    path: '/reminders',
+    name: '',
+    component: Reminders
   },
   {
     path: '/youtube',

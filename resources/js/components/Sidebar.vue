@@ -28,6 +28,15 @@
         <hr />
       </li>
 
+      <li>
+        <router-link
+          to="/reminders"
+          :event="discord ? 'click' : ''"
+          @click.native="discordReminder"
+        >Reminders</router-link>
+        <hr />
+      </li>
+
       <li v-if="this.User.hasPermission('YOUTUBE')">
         <router-link to="/youtube">Youtube</router-link>
         <hr />
@@ -48,6 +57,31 @@ export default {
   computed: {
     User() {
       return this.$store.state.User.User;
+    },
+    discord() {
+      return this.User.in_guild;
+    }
+  },
+  methods: {
+    discordReminder() {
+      if (!this.User.in_guild) {
+        this.$alert({
+          title: "Not in the discord server",
+          message:
+            "To use reminders, you have to be in the discord server. Would you like to join?",
+          buttons: [
+            {
+              text: "Join!",
+              type: "success",
+              action: () => {
+                window
+                  .open(process.env.MIX_DISCORD_GUILD_INVITE, "_blank")
+                  .focus();
+              }
+            }
+          ]
+        });
+      }
     }
   }
 };

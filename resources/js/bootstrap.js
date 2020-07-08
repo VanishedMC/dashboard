@@ -1,4 +1,5 @@
 window._ = require('lodash');
+import Echo from 'laravel-echo';
 
 try {
   window.Popper = require('popper.js').default;
@@ -8,11 +9,9 @@ try {
 } catch (e) { }
 
 window.axios = require('axios');
-
+window.csrf = document.querySelector('meta[name=csrf-token]').content;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + document.querySelector('meta[name=api_token]').content;
-
-import Echo from 'laravel-echo';
 
 window.Pusher = require('pusher-js');
 

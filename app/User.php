@@ -45,6 +45,10 @@ class User extends Authenticatable {
     return false;
   }
 
+  public function getReminders() {
+    return $this->hasMany('App\Reminder')->get();
+  }
+
   public function getShortUrls() {
     return $this->hasMany('App\ShortUrl')->get();
   }
