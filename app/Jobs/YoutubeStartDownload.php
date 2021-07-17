@@ -32,7 +32,7 @@ class YoutubeStartDownload implements ShouldQueue {
     $workDirectory = storage_path() . '/app/youtube/' . $this->information->id;
     // fix something for this
     // Fetch type from YoutubeInformation, has to be added
-    $type = (true) ? 'bestaudio' : 'bestvideo+bestaudio';
+    $type = (false) ? 'bestaudio' : 'bestvideo+bestaudio';
 
     if (file_exists($workDirectory)) {
       Storage::deleteDirectory('youtube/' . $this->information->id);
